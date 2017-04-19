@@ -13,6 +13,9 @@ collectionObj = (name) ->
 	, window
 
 Template.autoformModals.rendered = ->
+	if Steedos?.getModalMaxHeight
+		$("#afModal .modal-body").css("max-height", Steedos.getModalMaxHeight())
+
 	$('#afModal').modal(show: false)
 
 	onEscKey = (e) ->
