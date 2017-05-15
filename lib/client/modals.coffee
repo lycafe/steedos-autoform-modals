@@ -6,6 +6,8 @@ cmOnSuccessCallback = null
 AutoForm.addHooks 'cmForm',
 	onSuccess: ->
 		$('#afModal').modal('hide')
+	onError: (operation,error)->
+		toastr.error t(error.reason)
 
 collectionObj = (name) ->
 	name.split('.').reduce (o, x) ->
