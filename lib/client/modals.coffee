@@ -171,6 +171,9 @@ Template.afModal.events
 		if t.data.doc
 			Session.set 'cmDoc', collectionObj(t.data.collection).findOne _id: t.data.doc
 
+		if t.data.showRemoveButton
+			t.data.buttonContent = false
+
 		if t.data.buttonContent or t.data.buttonContent is false
 			Session.set 'cmButtonContent', t.data.buttonContent
 		else if t.data.operation == 'insert'
