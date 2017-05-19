@@ -8,19 +8,31 @@
 				</div>
 				<div class="modal-body">
 					{{#if $and cmCollection cmOperation}}
-					<p>{{{prompt}}}</p>
-					{{#if $neq cmOperation 'remove'}}
-					{{> quickForm title=cmTitle id=cmFormId collection=cmCollection doc=cmDoc type=cmAutoformType buttonContent=cmButtonContent fields=cmFields omitFields=cmOmitFields template=cmTemplate label-class=cmLabelClass input-col-class=cmInputColClass buttonClasses=cmButtonClasses afFieldInput-placeholder=cmPlaceholder meteormethod=cmMeteorMethod}}
-					{{/if}}
+						<p>{{{prompt}}}</p>
+						{{#if $neq cmOperation 'remove'}}
+							{{> quickForm title=cmTitle id=cmFormId collection=cmCollection doc=cmDoc type=cmAutoformType buttonContent=cmButtonContent fields=cmFields omitFields=cmOmitFields template=cmTemplate label-class=cmLabelClass input-col-class=cmInputColClass buttonClasses=cmButtonClasses afFieldInput-placeholder=cmPlaceholder meteormethod=cmMeteorMethod}}
+						{{/if}}
 					{{/if}}
 				</div>
 				{{#if $eq cmOperation 'remove'}}
-				<div class="modal-footer">
-					{{#if closeButtonContent}}
-					<a role="button" href="#" data-dismiss="modal" class="{{cmCloseButtonClasses}}">{{{closeButtonContent}}}</a>
+					<div class="modal-footer">
+						{{#if closeButtonContent}}
+							<a role="button" href="#" data-dismiss="modal" class="{{cmCloseButtonClasses}}">{{{closeButtonContent}}}</a>
+						{{/if}}
+						<button class="{{cmButtonClasses}}">{{{buttonContent}}}</button>
+					</div>
+				{{/if}}
+				{{#if cmShowRemoveButton}}
+					{{#if $eq cmOperation 'update'}}
+						<div class="modal-footer">
+							{{#if closeButtonContent}}
+								<button class="{{cmCloseButtonClasses}} btn-remove">{{{closeButtonContent}}}</button>
+							{{else}}
+								<button class="{{cmCloseButtonClasses}} btn-remove">{{{afModalRemove}}}</button>
+							{{/if}}
+							<button class="{{cmButtonClasses}}" type="submit">{{{afModalUpdate}}}</button>
+						</div>
 					{{/if}}
-					<button class="{{cmButtonClasses}}">{{{buttonContent}}}</button>
-				</div>
 				{{/if}}
 			</div>
 		</div>

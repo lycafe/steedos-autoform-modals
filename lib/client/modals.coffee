@@ -51,7 +51,8 @@ Template.autoformModals.rendered = ->
 			'cmAutoformType',
 			'cmMeteorMethod',
 			'cmCloseButtonContent',
-			'cmCloseButtonClasses'
+			'cmCloseButtonClasses',
+			'cmShowRemoveButton'
 		]
 		delete Session.keys[key] for key in sessionKeys
 
@@ -59,17 +60,25 @@ Template.autoformModals.events
 	'click button:not(.close)': () ->
 		collection = Session.get 'cmCollection'
 		operation = Session.get 'cmOperation'
+		showRemoveButton = Session.get 'cmShowRemoveButton' 
 
 		if operation != 'insert'
 			_id = Session.get('cmDoc')._id
 
-		if operation == 'remove'
+		if operation == 'remove' or (showRemoveButton and $(event.target).hasClass("btn-remove"))
 			collectionObj(collection).remove _id, (e)->
 				if e
-					alert 'Sorry, this could not be deleted.'
+					if e.reason
+						toastr?.error?(t(e.reason))
+					else
+						toastr?.error?('Sorry, this could not be deleted.')
 				else
 					$('#afModal').modal('hide')
 					cmOnSuccessCallback?()
+					toastr?.success?(t("afModal_remove_suc"))
+		else if showRemoveButton and operation == 'update'
+			$("#afModal #cmForm").submit()
+
 
 helpers =
 	cmCollection: () ->
@@ -125,6 +134,8 @@ helpers =
 		StringTemplate.compile '{{{cmButtonContent}}}', helpers
 	closeButtonContent: () ->
 		StringTemplate.compile '{{{cmCloseButtonContent}}}', helpers
+	cmShowRemoveButton: () ->
+		Session.get 'cmShowRemoveButton'
 
 Template.autoformModals.helpers helpers
 
@@ -148,7 +159,7 @@ Template.afModal.events
 		Session.set 'cmMeteorMethod', t.data.meteormethod
 		Session.set 'cmModalDialogClass', t.data.dialogClass
 		Session.set 'cmModalContentClass', t.data.contentClass
-
+		Session.set 'cmShowRemoveButton', t.data.showRemoveButton or false
 		cmOnSuccessCallback = t.data.onSuccess
 
 		if not _.contains registeredAutoFormHooks, t.data.formId
@@ -160,7 +171,7 @@ Template.afModal.events
 		if t.data.doc
 			Session.set 'cmDoc', collectionObj(t.data.collection).findOne _id: t.data.doc
 
-		if t.data.buttonContent
+		if t.data.buttonContent or t.data.buttonContent is false
 			Session.set 'cmButtonContent', t.data.buttonContent
 		else if t.data.operation == 'insert'
 			Session.set 'cmButtonContent', 'Create'
@@ -177,7 +188,7 @@ Template.afModal.events
 			Session.set 'cmButtonClasses', 'btn btn-primary'
 
 		Session.set 'cmCloseButtonContent', t.data.closeButtonContent or ''
-		Session.set 'cmCloseButtonClasses', t.data.closeButtonClasses or 'btn btn-default'
+		Session.set 'cmCloseButtonClasses', t.data.closeButtonClasses or 'btn btn-danger'
 
 		if t.data.prompt
 			Session.set 'cmPrompt', t.data.prompt
