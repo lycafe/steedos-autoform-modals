@@ -26,10 +26,11 @@
 					{{#if $eq cmOperation 'update'}}
 						<div class="modal-footer">
 							{{#if closeButtonContent}}
-								<button class="{{cmCloseButtonClasses}} btn-remove">{{{closeButtonContent}}}</button>
+								<button class="{{cmCloseButtonClasses}} btn-remove pull-left">{{{closeButtonContent}}}</button>
 							{{else}}
-								<button class="{{cmCloseButtonClasses}} btn-remove">{{{afModalRemove}}}</button>
+								<button class="{{cmCloseButtonClasses}} btn-remove pull-left">{{{afModalRemove}}}</button>
 							{{/if}}
+							<a role="button" href="#" data-dismiss="modal" class="btn btn-default">{{{afModalCancel}}}</a>
 							<button class="{{cmButtonClasses}}" type="submit">{{{afModalUpdate}}}</button>
 						</div>
 					{{/if}}
