@@ -6,8 +6,14 @@ cmOnSuccessCallback = null
 AutoForm.addHooks 'cmForm',
 	onSuccess: ->
 		$('#afModal').modal('hide')
-	onError: (operation,error)->
-		toastr.error t(error.reason)
+	onError: (operation,error) ->
+		console.error error
+		if error.reason
+			toastr?.error?(t(error.reason))
+		else if error.message
+			toastr?.error?(t(error.message))
+		else
+			toastr?.error?(error)
 
 collectionObj = (name) ->
 	name.split('.').reduce (o, x) ->
@@ -68,8 +74,11 @@ Template.autoformModals.events
 		if operation == 'remove' or (showRemoveButton and $(event.target).hasClass("btn-remove"))
 			collectionObj(collection).remove _id, (e)->
 				if e
+					console.error e
 					if e.reason
 						toastr?.error?(t(e.reason))
+					else if e.message
+						toastr?.error?(t(error.message))
 					else
 						toastr?.error?('Sorry, this could not be deleted.')
 				else
