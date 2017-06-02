@@ -33,12 +33,12 @@ Template.autoformModals.rendered = ->
 	$('#afModal').on 'shown.bs.modal', ->
 		$(window).bind 'keyup', onEscKey
 		
-		AutoForm.resetForm(Session.get('cmFormId') or defaultFormId)
+		operation = Session.get 'cmOperation'
+		if operation == 'update'
+			AutoForm.resetForm(Session.get('cmFormId') or defaultFormId)
 
 	$('#afModal').on 'hidden.bs.modal', ->
 		$(window).unbind 'keyup', onEscKey
-
-		AutoForm.resetForm(Session.get('cmFormId') or defaultFormId)
 
 		sessionKeys = [
 			'cmCollection',
@@ -63,6 +63,8 @@ Template.autoformModals.rendered = ->
 			'cmShowRemoveButton'
 		]
 		delete Session.keys[key] for key in sessionKeys
+
+		AutoForm.resetForm(Session.get('cmFormId') or defaultFormId)
 
 Template.autoformModals.events
 	'click button:not(.close)': () ->
