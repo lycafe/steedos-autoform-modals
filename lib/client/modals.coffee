@@ -32,6 +32,8 @@ Template.autoformModals.rendered = ->
 
 	$('#afModal').on 'shown.bs.modal', ->
 		$(window).bind 'keyup', onEscKey
+		
+		AutoForm.resetForm(Session.get('cmFormId') or defaultFormId)
 
 	$('#afModal').on 'hidden.bs.modal', ->
 		$(window).unbind 'keyup', onEscKey
