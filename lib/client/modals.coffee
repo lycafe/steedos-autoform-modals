@@ -21,6 +21,9 @@ collectionObj = (name) ->
 	, window
 
 Template.autoformModals.rendered = ->
+
+	self = this;
+
 	if Steedos?.getModalMaxHeight
 		$("#afModal .modal-body").css("max-height", Steedos.getModalMaxHeight())
 
@@ -30,7 +33,12 @@ Template.autoformModals.rendered = ->
 		if e.keyCode == 27
 			$('#afModal').modal 'hide'
 
+	$('#afModal').on 'show.bs.modal', ->
+		self.shouldUpdateQuickForm.set(true)
+
+
 	$('#afModal').on 'shown.bs.modal', ->
+
 		$(window).bind 'keyup', onEscKey
 		
 		operation = Session.get 'cmOperation'
@@ -63,6 +71,8 @@ Template.autoformModals.rendered = ->
 			'cmShowRemoveButton'
 		]
 		delete Session.keys[key] for key in sessionKeys
+
+		self.shouldUpdateQuickForm.set(false)
 
 		AutoForm.resetForm(Session.get('cmFormId') or defaultFormId)
 
@@ -150,6 +160,9 @@ helpers =
 	cmShowRemoveButton: () ->
 		Session.get 'cmShowRemoveButton'
 
+	shouldUpdateQuickForm: () ->
+		return Template.instance()?.shouldUpdateQuickForm.get()
+
 Template.autoformModals.helpers helpers
 
 Template.afModal.events
@@ -215,3 +228,7 @@ Template.afModal.events
 
 		$('#afModal').data('bs.modal').options.backdrop = t.data.backdrop or true
 		$('#afModal').modal 'show'
+
+Template.autoformModals.onCreated ->
+	self = this;
+	self.shouldUpdateQuickForm = new ReactiveVar(true);
