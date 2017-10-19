@@ -1,7 +1,7 @@
 Package.describe({
   name: 'steedos:autoform-modals',
   summary: "Create, update and delete collections with modals",
-  version: "0.3.9_7",
+  version: "0.3.9_8",
   git: "https://github.com/yogiben/meteor-autoform-modals"
 });
 

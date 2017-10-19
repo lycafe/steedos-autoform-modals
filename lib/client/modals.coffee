@@ -24,9 +24,6 @@ Template.autoformModals.rendered = ->
 
 	self = this;
 
-	if Steedos?.getModalMaxHeight
-		$("#afModal .modal-body").css("max-height", Steedos.getModalMaxHeight())
-
 	$('#afModal').modal(show: false)
 
 	onEscKey = (e) ->
@@ -38,7 +35,8 @@ Template.autoformModals.rendered = ->
 
 
 	$('#afModal').on 'shown.bs.modal', ->
-
+		if Steedos?.setModalMaxHeight
+			Steedos.setModalMaxHeight()
 		$(window).bind 'keyup', onEscKey
 		
 		operation = Session.get 'cmOperation'
