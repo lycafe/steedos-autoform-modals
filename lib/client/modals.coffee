@@ -127,11 +127,11 @@ helpers =
 	cmPrompt: () ->
 		Session.get 'cmPrompt'
 	cmTemplate: () ->
-		Session.get 'cmTemplate'
+		Session.get('cmTemplate') || "bootstrap3-horizontal"
 	cmLabelClass: () ->
-		Session.get 'cmLabelClass'
+		Session.get('cmLabelClass') || "col-sm-2"
 	cmInputColClass: () ->
-		Session.get 'cmInputColClass'
+		Session.get('cmInputColClass') || "col-sm-10"
 	cmPlaceholder: () ->
 		Session.get 'cmPlaceholder'
 	cmFormId: () ->
